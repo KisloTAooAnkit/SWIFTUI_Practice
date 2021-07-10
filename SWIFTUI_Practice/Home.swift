@@ -18,26 +18,7 @@ struct Home: View {
             Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
-                HStack {
-                    Text("Watching")
-                        .font(.system(size: 28, weight: .bold))
-                    Spacer()
-                    Button(action: {self.showProfile.toggle()}) {
-                        Image("ANKIT")
-                            .renderingMode(.original)
-                            .resizable()
-                            .frame(width: 36, height: 36, alignment: .center)
-                            .clipShape(Circle())
-                    }
-                    
-                }
-                .padding(.horizontal)
-                .padding(.top,30)
-                
-                
-                Spacer()
-            }
+           HomeView(showProfile: $showProfile)
             .padding(.top,44)
             .background(Color(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)))
             .clipShape(RoundedRectangle(cornerRadius: 30,style: .continuous))
@@ -52,9 +33,12 @@ struct Home: View {
         
             .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
             .edgesIgnoringSafeArea(.all)
+            
+            
+            
             MenuView()
                 .background(Color.black.opacity(0.001))
-                .offset(x: 0, y: showProfile ? 0 : 1000)
+                .offset(x: 0, y: showProfile ? 0 : screen.height)
                 .offset(x: 0, y: viewState.height)
                 .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
                 .onTapGesture {
@@ -83,3 +67,19 @@ struct Home_Previews: PreviewProvider {
         Home()
     }
 }
+
+struct AvatarView: View {
+    @Binding var showProfile : Bool
+    var body: some View {
+        Button(action: {self.showProfile.toggle()}) {
+            Image("ANKIT")
+                .renderingMode(.original)
+                .resizable()
+                .frame(width: 36, height: 36, alignment: .center)
+                .clipShape(Circle())
+        }
+    }
+}
+
+
+let screen = UIScreen.main.bounds
