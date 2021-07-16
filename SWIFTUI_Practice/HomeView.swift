@@ -11,60 +11,90 @@ struct HomeView: View {
     
     @Binding var showProfile : Bool
     @State var showUpdate = false
+    @Binding var showContent : Bool
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Watching")
-                    .font(.system(size: 28, weight: .bold))
-                Spacer()
-                AvatarView(showProfile: $showProfile)
-                
-                Button(action: {self.showUpdate.toggle()}) {
-                    Image(systemName: "bell")
-                        .renderingMode(.original)
-                        .font(.system(size: 16, weight: .medium))
-                        .frame(width: 36, height: 36, alignment: .center)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: 10
-                        )
-                }
-                .sheet(isPresented: $showUpdate, content: {
-                    UpdateList()
-                })
-
-            }
-            .padding(.horizontal) // by default 16 padding
-            .padding(.leading,14) // to allign with card start below 14 + 16 = 30
-            .padding(.top,30)
-            
-            
-            ScrollView(.horizontal,showsIndicators : false) {
-                HStack(spacing:30) {
-                    ForEach(sectionData) { item in
-                        SectionView(section: item)
+        ScrollView {
+            VStack {
+                HStack {
+                    Text("Watching")
+    //                    .font(.system(size: 28, weight: .bold))
+                        .modifier(CustomFontModifier(size: 28))
+                    Spacer()
+                    AvatarView(showProfile: $showProfile)
+                    
+                    Button(action: {self.showUpdate.toggle()}) {
+                        Image(systemName: "bell")
+                            .renderingMode(.original)
+                            .font(.system(size: 16, weight: .medium))
+                            .frame(width: 36, height: 36, alignment: .center)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: 10
+                            )
                     }
+                    .sheet(isPresented: $showUpdate, content: {
+                        UpdateList()
+                    })
+
                 }
-                .padding(30)
-                .padding(.bottom,30)
+                .padding(.horizontal) // by default 16 padding
+                .padding(.leading,14) // to allign with card start below 14 + 16 = 30
+                .padding(.top,30)
+                
+                ScrollView(.horizontal,showsIndicators :false) {
+                    WatchRingsView()
+                        .padding(.horizontal,30)
+                        .padding(.bottom,30)
+                        .onTapGesture {
+                            self.showContent = true
+                        }
+                }
+                
+                
+                ScrollView(.horizontal,showsIndicators : false) {
+                    HStack(spacing:30) {
+                        ForEach(sectionData) { item in
+                            SectionView(section: item)
+                        }
+                    }
+                    .padding(30)
+                    .padding(.bottom,30)
+                }
+                .offset(y: -30)
+                
+                
+                HStack {
+                    Text("Courses")
+                        .font(.title).bold()
+                    Spacer()
+                }
+                .padding(.leading,30)
+                .offset(y:-60)
+                
+                
+                SectionView(section: sectionData[2],width: screen.width-60,height: 275)
+                    .offset(y:-60)
+                
+                Spacer()
             }
-            
-            
-            
-            Spacer()
         }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(showProfile: .constant(false))
+        HomeView(showProfile: .constant(false), showContent: .constant(false))
     }
 }
 
 struct SectionView: View {
     var section : Section
+    
+    var width : CGFloat = 275
+    var height : CGFloat = 275
+    
+    
     var body: some View {
         VStack {
             HStack(alignment:.top) {
@@ -84,7 +114,7 @@ struct SectionView: View {
         }
         .padding(.top,20)
         .padding(.horizontal,20)
-        .frame(width: 275, height: 275)
+        .frame(width: width, height: height)
         .background(section.color)
         .cornerRadius(30)
         .shadow(color: section.color.opacity(0.5), radius: 20, x: 0, y: 20)
@@ -135,3 +165,45 @@ let sectionData = [
 ]
 
 
+
+struct WatchRingsView: View {
+    var body: some View {
+        HStack(spacing: 30.0) {
+            
+            HStack(spacing: 12.0) {
+                RingView(color1: #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1), color2: #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), width: 44, height: 44, percent: 68, showProgress: .constant(true))
+                VStack(alignment: .leading, spacing: 4.0) {
+                    Text("6 minutes left")
+                        .modifier(FontModifier(style: .headline))
+                    Text("Watched 10 minutes today")
+                        .modifier(FontModifier(style: .caption))
+                }
+            }
+            .padding(8)
+            .background(Color.white)
+            .cornerRadius(20)
+            .modifier(ShadowModifier())
+            
+            
+            HStack(spacing: 12.0) {
+                RingView(color1: #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), color2: #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1), width: 32, height: 32, percent: 24, showProgress: .constant(true))
+                
+            }
+            .padding(8)
+            .background(Color.white)
+            .cornerRadius(20)
+            .modifier(ShadowModifier())
+            
+            
+            
+            HStack(spacing: 12.0) {
+                RingView(color1: #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), color2: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1), width: 32, height: 32, percent: 72, showProgress: .constant(true))
+                
+            }
+            .padding(8)
+            .background(Color.white)
+            .cornerRadius(20)
+            .modifier(ShadowModifier())
+        }
+    }
+}

@@ -11,6 +11,7 @@ struct Home: View {
     
     @State var showProfile = false
     @State var viewState = CGSize.zero
+    @State var showContent = false
     
     var body: some View {
         ZStack {
@@ -18,21 +19,28 @@ struct Home: View {
             Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))
                 .edgesIgnoringSafeArea(.all)
             
-           HomeView(showProfile: $showProfile)
-            .padding(.top,44)
-            .background(Color(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)))
-            .clipShape(RoundedRectangle(cornerRadius: 30,style: .continuous))
-            .shadow(color: .black.opacity(0.2), radius: 20, x: 0.0, y: 20)
-            .offset(x: 0, y: showProfile ? -450 : 0)
-            
-            .rotation3DEffect(
-                Angle(degrees: showProfile ? -10 : 0),
-                axis: (x: 1, y: 0.0, z: 0.0)
-            )
-            .scaleEffect(showProfile ? 0.9 : 1)
-        
-            .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
-            .edgesIgnoringSafeArea(.all)
+            HomeView(showProfile: $showProfile, showContent: $showContent)
+                .padding(.top,44)
+                .background(
+                    VStack {
+                        LinearGradient(gradient: Gradient(colors: [Color("background2"), Color.white]), startPoint: .top, endPoint: .bottom)
+                            .frame(height:200)
+                        Spacer()
+                    }
+                    .background(Color.white)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 30,style: .continuous))
+                .shadow(color: .black.opacity(0.2), radius: 20, x: 0.0, y: 20)
+                .offset(x: 0, y: showProfile ? -450 : 0)
+                
+                .rotation3DEffect(
+                    Angle(degrees: showProfile ? -10 : 0),
+                    axis: (x: 1, y: 0.0, z: 0.0)
+                )
+                .scaleEffect(showProfile ? 0.9 : 1)
+                
+                .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
+                .edgesIgnoringSafeArea(.all)
             
             
             
@@ -58,6 +66,29 @@ struct Home: View {
                             self.viewState = .zero
                         })
                 )
+            
+            if showContent {
+                Color.white.edgesIgnoringSafeArea(.all)
+                ContentView()
+                VStack {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "xmark")
+                            .frame(width: 36, height: 36, alignment: .center)
+                            .foregroundColor(.white)
+                            .background(Color.black)
+                            .clipShape(Circle())
+                    }
+                    Spacer()
+                }
+                .offset(x: -16, y: 16)
+                .onTapGesture {
+                    self.showContent = false
+                }
+            }
+            
+
+            
         }
     }
 }
