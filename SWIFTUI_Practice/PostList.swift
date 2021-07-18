@@ -13,7 +13,7 @@ struct PostList: View {
     @ObservedObject var store = DataStore()
     
     var body: some View {
-        List(store.$listOfPost) { post in
+        List(store) { post in
             VStack(alignment: .leading, spacing: 8)
             {
                 Text(post.title)

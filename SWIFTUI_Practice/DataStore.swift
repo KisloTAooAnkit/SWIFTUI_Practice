@@ -10,7 +10,7 @@ import Combine
 
 class DataStore : ObservableObject
 {
-    @Published var listOfPost : ListOfPosts = ListOfPosts(postLists: [])
+    @Published var listOfPost : SinglePost = []
     
     
     init() {
