@@ -10,7 +10,7 @@ import Combine
 
 class DataStore : ObservableObject
 {
-    @Published var posts : [Post] = []
+    @Published var listOfPost : ListOfPosts = ListOfPosts(postLists: [])
     
     
     init() {
@@ -20,7 +20,7 @@ class DataStore : ObservableObject
     func getPosts()
     {
         Api().getPosts { posts in
-            self.posts = posts
+            self.listOfPost = posts
         }
     }
     

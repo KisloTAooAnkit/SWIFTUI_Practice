@@ -7,10 +7,14 @@
 
 import SwiftUI
 
+struct ListOfPosts : Codable , Identifiable
+{
+    var id = UUID()
+    var postLists : [SinglePost]
+}
 
 
-
-struct Post : Codable, Identifiable {
+struct SinglePost : Codable, Identifiable {
     var id = UUID()
     var title : String
     var body  : String
@@ -19,7 +23,7 @@ struct Post : Codable, Identifiable {
 
 
 class Api {
-    func getPosts(completion : @escaping ([Post]) -> ())
+    func getPosts(completion : @escaping (ListOfPosts) -> ())
     {
         guard let url = URL(string:"https://jsonplaceholder.typicode.com/posts") else {return}
         
@@ -31,7 +35,7 @@ class Api {
                     do
                     {
                         let jsonDcdr = JSONDecoder()
-                        let postList = try jsonDcdr.decode([Post].self, from: mydata)
+                        let postList = try jsonDcdr.decode(ListOfPosts.self, from: mydata)
                         print(postList)
                         completion(postList)
                         
