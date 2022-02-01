@@ -1,11 +1,11 @@
 
-##This is a demo application with a mockup UI for a E learning based application 
+# This is a demo application with a mockup UI for a E learning based application 
 
-###This app is completely implemented in SWIFTUI and includes native transitions and native animations without any external package
+### This app is completely implemented in SWIFTUI and includes native transitions and native animations without any external package
 
 ### App uses mockup credentials to login to firebase storage.
 
-#App Screens
+# App Screens
 
 
 ![1](https://user-images.githubusercontent.com/40890260/151988310-6713748f-4636-46ca-9ea6-588bcfab8d5c.gif)
